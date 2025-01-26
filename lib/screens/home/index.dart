@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spend_snap/widgets/bar_chart.dart';
+import 'package:spend_snap/widgets/list.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Align(
             alignment: Alignment.topCenter,
@@ -58,48 +60,16 @@ class _HomeScreenState extends State<HomeScreen> {
               child: CustomBarChart(),
             ),
           ),
+          SizedBox(height: 30),
+          Text(
+            'Last 5 transactions',
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  decoration: TextDecoration.underline,
+                ),
+          ),
+          SizedBox(height: 4),
           Expanded(
-            child: ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context, index) {
-                return Card(
-                  margin: const EdgeInsets.symmetric(vertical: 8.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  elevation: 2,
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.attach_money,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    title: Text(
-                      'Transaction $index', // Replace with your data title
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-                    ),
-                    subtitle: Text(
-                      'Description for transaction $index', // Replace with your data description
-                      style: TextStyle(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withOpacity(0.6),
-                      ),
-                    ),
-                    trailing: Text(
-                      '\$${(index + 1) * 10}', // Replace with your data amount
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
+            child: CustomList(),
           ),
         ],
       ),
