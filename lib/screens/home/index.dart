@@ -31,24 +31,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 borderRadius: BorderRadius.circular(50),
               ),
-              child: DropdownButton<String>(
-                value: _selectedValue,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedValue = newValue!;
-                  });
-                },
-                items: <String>['daily', 'monthly', 'yearly']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary,
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  value: _selectedValue,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedValue = newValue!;
+                    });
+                  },
+                  items: <String>['daily', 'monthly', 'yearly']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    backgroundColor: Colors.transparent,
+                  ),
                 ),
-                dropdownColor: Theme.of(context).scaffoldBackgroundColor,
               ),
             ),
           ),
