@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:spend_snap/app_routers.dart';
 import 'package:spend_snap/config/constants.dart';
 import 'package:spend_snap/config/theme.dart';
-import 'package:spend_snap/layouts/mobile.dart';
 
 void main() {
   runApp(const SpendSnap());
@@ -19,8 +19,9 @@ class SpendSnap extends StatelessWidget {
       darkTheme: AppTheme.darkTheme,
       // themeMode: ThemeMode.dark,
       themeMode: AppTheme.systemTheme,
-      debugShowCheckedModeBanner: false,
-      home: const MobileLayout(title: Constants.appTitle),
+      debugShowCheckedModeBanner: true,
+      initialRoute: AppRoutes.home,
+      routes: AppRoutes.routes,
     );
   }
 }

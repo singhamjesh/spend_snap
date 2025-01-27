@@ -1,20 +1,155 @@
 import 'package:flutter/material.dart';
 
 class BottomNavigation extends StatefulWidget {
-  const BottomNavigation({
-    super.key,
-    required this.onMenuTapped,
-    required this.selectedIndex,
-  });
-
-  final ValueChanged<int> onMenuTapped;
-  final int selectedIndex;
+  const BottomNavigation({super.key});
 
   @override
   State<BottomNavigation> createState() => _BottomNavigationState();
 }
 
 class _BottomNavigationState extends State<BottomNavigation> {
+  int _selectedIndex = 0;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    // Update `_selectedIndex` based on the current route name
+    String? currentRoute = ModalRoute.of(context)?.settings.name;
+    if (currentRoute == '/' && _selectedIndex == 1) return;
+
+    switch (currentRoute) {
+      case '/':
+        _selectedIndex = 0;
+        break;
+      default:
+        _selectedIndex = -1;
+    }
+  }
+
+  void _onItemTapped(int index) async {
+    if (index == 1) {
+      setState(() {
+        _selectedIndex = 1;
+      });
+
+      // Show Add Transaction popup
+      await _showAddTransactionPopup();
+
+      return;
+    }
+
+    if (index == 2) {
+      // Open side menu from left to right
+      Scaffold.of(context).openEndDrawer();
+      return;
+    }
+
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    String? routeName;
+    switch (index) {
+      default:
+        routeName = '/';
+    }
+
+    Navigator.pushNamed(context, routeName);
+  }
+
+  Future<void> _showAddTransactionPopup() async {
+    await showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+      ),
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: 16.0,
+              right: 16.0,
+              top: 16.0,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 16.0,
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min, // Adjust height dynamically
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Center(
+                  child: Container(
+                    width: 50,
+                    height: 5,
+                    margin: const EdgeInsets.only(bottom: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+                const Text(
+                  "Add New Transaction",
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: "Title",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: "Amount",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          setState(() {
+                            _selectedIndex = -1;
+                          });
+                        },
+                        child: const Text("Cancel"),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Handle adding transaction logic here
+                          Navigator.of(context).pop();
+                          setState(() {
+                            _selectedIndex = -1;
+                          });
+                        },
+                        child: const Text("Add"),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -46,10 +181,10 @@ class _BottomNavigationState extends State<BottomNavigation> {
     ];
 
     return List.generate(items.length, (index) {
-      final isSelected = widget.selectedIndex == index;
+      bool isSelected = _selectedIndex == index;
 
       return GestureDetector(
-        onTap: () => widget.onMenuTapped(index),
+        onTap: () => _onItemTapped(index),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

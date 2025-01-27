@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spend_snap/widgets/bar_chart.dart';
+import 'package:spend_snap/widgets/form_elements/dropdown.dart';
 import 'package:spend_snap/widgets/list.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,8 +11,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String _selectedValue = 'daily';
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -22,54 +21,44 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Align(
             alignment: Alignment.topCenter,
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Theme.of(context).colorScheme.secondary,
-                  width: 2,
-                ),
-                borderRadius: BorderRadius.circular(50),
-              ),
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  value: _selectedValue,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedValue = newValue!;
-                    });
-                  },
-                  items: <String>['daily', 'monthly', 'yearly']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                    backgroundColor: Colors.transparent,
-                  ),
-                ),
-              ),
+            child: Dropdown(
+              name: 'view',
+              initialValue: 'monthly',
+              items: [
+                DropdownItem(label: 'Daily', value: 'daily'),
+                DropdownItem(label: 'Monthly', value: 'monthly'),
+                DropdownItem(label: 'Yearly', value: 'yearly')
+              ],
             ),
           ),
           SizedBox(height: 30),
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.fromLTRB(16, 10, 16, 5),
             child: SizedBox(
-              height: 250,
+              height: 200,
               child: CustomBarChart(),
             ),
           ),
-          SizedBox(height: 30),
-          Text(
-            'Last 5 transactions',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  decoration: TextDecoration.underline,
-                ),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Last 5 transactions',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      decoration: TextDecoration.underline,
+                      fontSize: 18,
+                    ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/transactions');
+                },
+                child: Text('See all'),
+              )
+            ],
           ),
-          SizedBox(height: 4),
+          SizedBox(height: 2),
           Expanded(
             child: CustomList(),
           ),
