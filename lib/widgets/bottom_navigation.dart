@@ -24,6 +24,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
       case '/':
         _selectedIndex = 0;
         break;
+      case '/filters':
+        _selectedIndex = 2;
+        break;
       default:
         _selectedIndex = -1;
     }
@@ -37,13 +40,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
       // Show Add Transaction popup
       await _showAddTransactionPopup();
-
-      return;
-    }
-
-    if (index == 2) {
-      // Open side menu from left to right
-      Scaffold.of(context).openEndDrawer();
       return;
     }
 
@@ -51,13 +47,16 @@ class _BottomNavigationState extends State<BottomNavigation> {
       _selectedIndex = index;
     });
 
-    String? routeName;
     switch (index) {
+      case 2:
+        {
+          Navigator.pushNamed(context, '/filters');
+        }
       default:
-        routeName = '/';
+        {
+          Navigator.pushReplacementNamed(context, '/');
+        }
     }
-
-    Navigator.pushNamed(context, routeName);
   }
 
   Future<void> _showAddTransactionPopup() async {
@@ -77,7 +76,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).colorScheme.primary,
-      padding: EdgeInsets.only(top: 16),
+      padding: EdgeInsets.only(top: 8),
       child: SafeArea(
         bottom: true,
         child: Container(
@@ -107,7 +106,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           children: [
             AnimatedContainer(
               duration: const Duration(milliseconds: 300),
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: isSelected ? Colors.white : Colors.transparent,
@@ -120,7 +119,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
                     : Colors.white,
               ),
             ),
-            const SizedBox(height: 5),
             Text(
               items[index]['label'],
               style: TextStyle(

@@ -20,7 +20,7 @@ class _CustomListState extends State<CustomList> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
-          elevation: 2,
+          elevation: 4,
           child: ListTile(
             leading: Icon(
               Icons.attach_money,
@@ -28,19 +28,18 @@ class _CustomListState extends State<CustomList> {
             ),
             title: Text(
               'Transaction $index',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
             ),
             subtitle: Text(
               'Description for transaction $index',
-              style: TextStyle(
-                color: Theme.of(context)
-                    .colorScheme
-                    .onSurface
-                    .withValues(alpha: 0.6),
-              ),
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withValues(alpha: 0.6),
+                  ),
             ),
             trailing: Text(
               '\$${(index + 1) * 10}',

@@ -58,7 +58,6 @@ class _HomeScreenState extends State<HomeScreen> {
               )
             ],
           ),
-          SizedBox(height: 2),
           Expanded(
             child: CustomList(),
           ),
