@@ -4,6 +4,7 @@ import 'package:spend_snap/config/constants.dart';
 import 'package:spend_snap/config/theme.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const SpendSnap());
 }
 
