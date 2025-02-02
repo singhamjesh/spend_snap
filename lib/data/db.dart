@@ -56,7 +56,7 @@ class DB {
       return dbPath;
     } catch (e) {
       // Handle the error gracefully, possibly by using a fallback path
-      print('Error getting database path: $e');
+      // print('Error getting database path: $e');
       return Directory.systemTemp.path; // Use system temporary directory as fallback
     }
   }
