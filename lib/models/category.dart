@@ -1,0 +1,21 @@
+enum Category {
+  food,
+  fair,
+  rent,
+  utilities,
+  entertainment,
+  healthcare,
+  transportation,
+  education,
+  clothing,
+  groceries,
+  diningOut,
+  travel,
+  savings,
+  insurance,
+  gifts,
+  donations,
+  personalCare,
+  subscriptions,
+  homeMaintenance
+}

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -16,8 +17,8 @@ class DB {
   }
 
   static Future<Database> _initDB() async {
-    final dbPath = await databaseFactory.getDatabasesPath();
-    final path = join(dbPath, 'app_database.db');
+    final dbPath = await _getDatabasePath();
+    final path = join(dbPath, 'spend_snap_database.db');
 
     return await databaseFactory.openDatabase(path,
         options: OpenDatabaseOptions(
@@ -33,14 +34,30 @@ class DB {
             await db.execute('''
           CREATE TABLE transactions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            userId INTEGER NOT NULL,
             title TEXT NOT NULL,
-            amount REAL NOT NULL,
-            date TEXT NOT NULL,
-            FOREIGN KEY (userId) REFERENCES users (id)
+            amount DOUBLE NOT NULL,
+            date DATETIME NOT NULL,
+            type TEXT NOT NULL,
+            category TEXT NOT NULL,
+            descriptions TEXT NULL
           )
         ''');
           },
         ));
+  }
+
+  static Future<String> _getDatabasePath() async {
+    try {
+      final dbPath = await databaseFactory.getDatabasesPath();
+      final directory = Directory(dbPath);
+      if (!await directory.exists()) {
+        await directory.create(recursive: true);
+      }
+      return dbPath;
+    } catch (e) {
+      // Handle the error gracefully, possibly by using a fallback path
+      print('Error getting database path: $e');
+      return Directory.systemTemp.path; // Use system temporary directory as fallback
+    }
   }
 }

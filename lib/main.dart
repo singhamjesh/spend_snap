@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spend_snap/app_routers.dart';
 import 'package:spend_snap/config/constants.dart';
 import 'package:spend_snap/config/theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const SpendSnap());
+  runApp(
+    const ProviderScope(child: SpendSnap()),
+  );
 }
 
 class SpendSnap extends StatelessWidget {

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/transaction_provider.dart';
 
-class CustomList extends StatefulWidget {
+class CustomList extends ConsumerWidget {
   const CustomList({
     super.key,
   });
 
   @override
-  State<CustomList> createState() => _CustomListState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final transactions = ref.watch(transactionProvider);
 
-class _CustomListState extends State<CustomList> {
-  @override
-  Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 5,
+      itemCount: transactions.length,
       itemBuilder: (context, index) {
+        final transaction = transactions[index];
         return Card(
           margin: const EdgeInsets.symmetric(vertical: 4.0),
           shape: RoundedRectangleBorder(
@@ -27,22 +27,21 @@ class _CustomListState extends State<CustomList> {
               color: Theme.of(context).colorScheme.primary,
             ),
             title: Text(
-              'Transaction $index',
+              transaction.title,
               style: Theme.of(context).textTheme.titleMedium!.copyWith(
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
             ),
             subtitle: Text(
-              'Description for transaction $index',
+              transaction.descriptions ?? 'No description',
               style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.6),
-                  ),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withValues(alpha: 0.6)),
             ),
             trailing: Text(
-              '\$${(index + 1) * 10}',
+              '\$${transaction.amount.toStringAsFixed(2)}',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).colorScheme.secondary,
